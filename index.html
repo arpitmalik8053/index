@@ -3,15 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>For Ira ❤️</title>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
     margin: 0;
+    padding: 0;
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -21,49 +25,79 @@ html, body {
 
 canvas {
     position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
 }
+
+/* CENTER EVERYTHING */
 
 .message {
     position: fixed;
-    inset: 0;
+
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     text-align: center;
+
     pointer-events: none;
+
     padding: 20px;
 }
 
 .text {
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto;
+
     color: white;
+
     text-shadow:
         0 0 10px white,
         0 0 25px #ff4fa3,
         0 0 45px #9d4edd;
+
     opacity: 0;
+
     transition: opacity 2s ease;
 }
 
 .intro {
     font-size: clamp(24px, 6vw, 50px);
+
     font-weight: bold;
+
     letter-spacing: 3px;
 }
 
 .final {
-    max-width: 800px;
     font-size: clamp(18px, 4vw, 30px);
+
     line-height: 1.7;
+
+    text-align: center;
+
+    width: 100%;
 }
 
 .name {
     font-size: clamp(70px, 18vw, 150px);
+
     font-weight: bold;
+
     color: #ff7ac8;
+
     margin: 10px 0;
+
     text-shadow:
         0 0 10px #ff7ac8,
         0 0 30px #ff4fa3,
@@ -76,18 +110,24 @@ canvas {
 
 .heart {
     font-size: 70px;
+
     color: #ff4f9a;
+
     animation: beat 1s infinite;
+
     text-shadow:
         0 0 15px #ff4f9a,
         0 0 40px #ff1493;
 }
 
 @keyframes beat {
+
     50% {
         transform: scale(1.25);
     }
+
 }
+
 </style>
 </head>
 
@@ -98,19 +138,25 @@ canvas {
 <div class="message">
 
     <div id="intro" class="text intro">
+
         ✦ ДЛЯ ТЕБЕ, КОХАНА ✦
+
     </div>
+
 
     <div id="final" class="text final">
 
-        <div>Кохана...</div>
+        <div>
+            Кохана...
+        </div>
 
         <div class="name">
             IRA
         </div>
 
         <div>
-            Out of all the stars in the universe,<br>
+            Out of all the stars in the universe,
+            <br>
             somehow, my eyes found you. ✨
         </div>
 
@@ -134,23 +180,38 @@ canvas {
 
 </div>
 
+
 <script>
 
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+const canvas =
+    document.getElementById("canvas");
+
+const ctx =
+    canvas.getContext("2d");
 
 let W = 0;
 let H = 0;
 
 let stars = [];
 
+
+/* RESIZE */
+
 function resize() {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
+
+    W = window.innerWidth;
+    H = window.innerHeight;
+
+    canvas.width = W;
+    canvas.height = H;
 }
 
-window.addEventListener("resize", resize);
 resize();
+
+window.addEventListener(
+    "resize",
+    resize
+);
 
 
 /* STAR */
@@ -159,30 +220,46 @@ class Star {
 
     constructor() {
 
-        this.x = Math.random() * W;
-        this.y = Math.random() * H;
+        this.x =
+            Math.random() * W;
+
+        this.y =
+            Math.random() * H;
 
         this.tx = this.x;
         this.ty = this.y;
 
-        this.size = Math.random() * 2 + 1;
+        this.size =
+            Math.random() * 2 + 1;
 
-        this.speed = Math.random() * 0.025 + 0.01;
+        this.speed =
+            Math.random() * 0.025 + 0.01;
 
-        this.phase = Math.random() * Math.PI * 2;
+        this.phase =
+            Math.random() *
+            Math.PI * 2;
 
-        this.brightness = Math.random();
+        this.brightness =
+            Math.random();
+
     }
 
     update() {
 
-        this.x += (this.tx - this.x) * this.speed;
-        this.y += (this.ty - this.y) * this.speed;
+        this.x +=
+            (this.tx - this.x)
+            * this.speed;
+
+        this.y +=
+            (this.ty - this.y)
+            * this.speed;
 
         this.phase += 0.04;
 
         const glow =
-            0.5 + Math.sin(this.phase) * 0.5;
+            0.5 +
+            Math.sin(this.phase)
+            * 0.5;
 
         ctx.beginPath();
 
@@ -196,11 +273,14 @@ class Star {
 
         ctx.fillStyle =
             "rgba(255,255,255," +
-            (0.5 + this.brightness * 0.5) +
+            (0.5 +
+            this.brightness * 0.5) +
             ")";
 
         ctx.shadowBlur = 15;
-        ctx.shadowColor = "#ff7ac8";
+
+        ctx.shadowColor =
+            "#ff7ac8";
 
         ctx.fill();
 
@@ -211,16 +291,24 @@ class Star {
 
 /* CREATE STARS */
 
-for (let i = 600; i > 0; i--) {
-    stars.push(new Star());
+for (
+    let i = 0;
+    i < 600;
+    i++
+) {
+
+    stars.push(
+        new Star()
+    );
 }
 
 
-/* CLEAR SCREEN */
+/* CLEAR */
 
 function clearScreen() {
 
-    ctx.fillStyle = "rgba(5,0,13,0.25)";
+    ctx.fillStyle =
+        "rgba(5,0,13,0.25)";
 
     ctx.fillRect(
         0,
@@ -231,34 +319,45 @@ function clearScreen() {
 }
 
 
-/* RANDOM POSITION */
+/* RANDOM */
 
 function randomTargets() {
 
     return stars.map(() => {
 
         return {
-            x: Math.random() * W,
-            y: Math.random() * H
+
+            x:
+                Math.random() * W,
+
+            y:
+                Math.random() * H
         };
 
     });
 }
 
 
-/* IRA LETTER TARGET */
+/* IRA */
 
 function wordTargets(word) {
 
-    const temp = document.createElement("canvas");
+    const temp =
+        document.createElement(
+            "canvas"
+        );
 
-    const c = temp.getContext("2d");
+    const c =
+        temp.getContext("2d");
 
     temp.width = W;
     temp.height = H;
 
     const size =
-        Math.min(W * 0.25, 160);
+        Math.min(
+            W * 0.25,
+            160
+        );
 
     c.font =
         "bold " +
@@ -266,6 +365,7 @@ function wordTargets(word) {
         "px Arial";
 
     c.textAlign = "center";
+
     c.textBaseline = "middle";
 
     c.fillStyle = "white";
@@ -286,14 +386,24 @@ function wordTargets(word) {
 
     const points = [];
 
-    for (let y = 0; y < H; y += 5) {
+    for (
+        let y = 0;
+        y < H;
+        y += 5
+    ) {
 
-        for (let x = 0; x < W; x += 5) {
+        for (
+            let x = 0;
+            x < W;
+            x += 5
+        ) {
 
             const index =
                 (y * W + x) * 4;
 
-            if (data[index + 3] > 100) {
+            if (
+                data[index + 3] > 100
+            ) {
 
                 points.push({
                     x: x,
@@ -301,7 +411,9 @@ function wordTargets(word) {
                 });
 
             }
+
         }
+
     }
 
     return points;
@@ -324,7 +436,11 @@ function heartTargets() {
     ) {
 
         const x =
-            16 * Math.pow(Math.sin(t), 3);
+            16 *
+            Math.pow(
+                Math.sin(t),
+                3
+            );
 
         const y =
             13 * Math.cos(t)
@@ -335,12 +451,15 @@ function heartTargets() {
         points.push({
 
             x:
-                W / 2 + x * scale,
+                W / 2 +
+                x * scale,
 
             y:
-                H / 2 - y * scale
+                H / 2 -
+                y * scale
 
         });
+
     }
 
     return points;
@@ -351,72 +470,94 @@ function heartTargets() {
 
 function moveToTargets(points) {
 
-    stars.forEach((star, i) => {
+    stars.forEach(
+        (star, i) => {
 
-        const p =
-            points[i % points.length];
+            const p =
+                points[
+                    i % points.length
+                ];
 
-        star.tx = p.x;
-        star.ty = p.y;
+            star.tx = p.x;
+            star.ty = p.y;
 
-    });
+        }
+    );
 }
 
 
-/* START RANDOM */
+/* START */
 
 moveToTargets(
     randomTargets()
 );
 
 
-/* FORM IRA */
+/* IRA */
 
-setTimeout(() => {
+setTimeout(
+    () => {
 
-    moveToTargets(
-        wordTargets("IRA")
-    );
+        moveToTargets(
+            wordTargets("IRA")
+        );
 
-}, 2500);
-
-
-/* FORM HEART */
-
-setTimeout(() => {
-
-    moveToTargets(
-        heartTargets()
-    );
-
-}, 6500);
+    },
+    2500
+);
 
 
-/* HIDE INTRO */
+/* HEART */
 
-setTimeout(() => {
+setTimeout(
+    () => {
 
-    document.getElementById("intro")
-        .style.opacity = "0";
+        moveToTargets(
+            heartTargets()
+        );
 
-}, 7000);
+    },
+    6500
+);
 
 
-/* SHOW FINAL MESSAGE */
+/* INTRO OFF */
 
-setTimeout(() => {
+setTimeout(
+    () => {
 
-    document.getElementById("final")
-        .style.opacity = "1";
+        document
+            .getElementById("intro")
+            .style.opacity = "0";
 
-}, 8500);
+    },
+    7000
+);
+
+
+/* FINAL ON */
+
+setTimeout(
+    () => {
+
+        document
+            .getElementById("final")
+            .style.opacity = "1";
+
+    },
+    8500
+);
 
 
 /* FIREWORKS */
 
 function fireworks() {
 
-    for (let i = 0; i < 12; i++) {
+    for (
+        let i = 0;
+        i < 12;
+        i++
+    ) {
 
         const x =
             Math.random() * W;
@@ -461,8 +602,12 @@ function animate() {
         star => star.update()
     );
 
-    if (Date.now() % 1000 < 50) {
+    if (
+        Date.now() % 1000 < 50
+    ) {
+
         fireworks();
+
     }
 
     requestAnimationFrame(
@@ -473,12 +618,14 @@ function animate() {
 animate();
 
 
-/* CLICK TO RESTART */
+/* TAP TO RESTART */
 
 document.body.addEventListener(
     "click",
     () => {
+
         location.reload();
+
     }
 );
 
