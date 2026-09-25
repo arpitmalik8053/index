@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,85 +7,86 @@
 
 <style>
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html, body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: #05000d;
-  font-family: Arial, sans-serif;
-}
-
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #05000d;
+    font-family: Arial, sans-serif;
 }
 
 canvas {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .message {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  pointer-events: none;
-  padding: 25px;
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    pointer-events: none;
+    padding: 20px;
 }
 
 .text {
-  color: white;
-  text-shadow:
-    0 0 10px #fff,
-    0 0 25px #ff4fa3,
-    0 0 45px #9d4edd;
-  opacity: 0;
-  transition: opacity 1.5s ease;
+    color: white;
+    text-shadow:
+        0 0 10px white,
+        0 0 25px #ff4fa3,
+        0 0 45px #9d4edd;
+    opacity: 0;
+    transition: opacity 2s ease;
 }
 
 .intro {
-  font-size: clamp(24px, 6vw, 50px);
-  font-weight: bold;
-  letter-spacing: 3px;
+    font-size: clamp(24px, 6vw, 50px);
+    font-weight: bold;
+    letter-spacing: 3px;
 }
 
 .final {
-  max-width: 700px;
-  font-size: clamp(18px, 4vw, 32px);
-  line-height: 1.7;
+    max-width: 800px;
+    font-size: clamp(18px, 4vw, 30px);
+    line-height: 1.7;
 }
 
 .name {
-  font-size: clamp(60px, 15vw, 130px);
-  font-weight: bold;
-  color: #ff7ac8;
-  margin: 15px 0;
+    font-size: clamp(70px, 18vw, 150px);
+    font-weight: bold;
+    color: #ff7ac8;
+    margin: 10px 0;
+    text-shadow:
+        0 0 10px #ff7ac8,
+        0 0 30px #ff4fa3,
+        0 0 70px #ff1493;
 }
 
 .small {
-  font-size: clamp(15px, 3vw, 22px);
+    font-size: clamp(15px, 3vw, 22px);
 }
 
 .heart {
-  color: #ff4f9a;
-  font-size: 60px;
-  animation: beat 1s infinite;
+    font-size: 70px;
+    color: #ff4f9a;
+    animation: beat 1s infinite;
+    text-shadow:
+        0 0 15px #ff4f9a,
+        0 0 40px #ff1493;
 }
 
 @keyframes beat {
-  50% {
-    transform: scale(1.25);
-  }
+    50% {
+        transform: scale(1.25);
+    }
 }
 </style>
 </head>
@@ -95,254 +96,392 @@ canvas {
 <canvas id="canvas"></canvas>
 
 <div class="message">
-  <div id="intro" class="text intro">
-    ✦ ДЛЯ ТЕБЕ, КОХАНА ✦
-  </div>
 
-  <div id="final" class="text final">
-    <div>Кохана...</div>
-
-    <div class="name">IRA</div>
-
-    <div>
-      Out of all the stars in the universe,<br>
-      somehow, my eyes found you. ✨
+    <div id="intro" class="text intro">
+        ✦ ДЛЯ ТЕБЕ, КОХАНА ✦
     </div>
 
-    <br>
+    <div id="final" class="text final">
 
-    <div>
-      Ти особлива для мене ❤️
+        <div>Кохана...</div>
+
+        <div class="name">
+            IRA
+        </div>
+
+        <div>
+            Out of all the stars in the universe,<br>
+            somehow, my eyes found you. ✨
+        </div>
+
+        <br>
+
+        <div>
+            Ти особлива для мене ❤️
+        </div>
+
+        <br>
+
+        <div class="small">
+            YOU'RE MY FAVORITE LITTLE SURPRISE ✨
+        </div>
+
+        <div class="heart">
+            ♥
+        </div>
+
     </div>
 
-    <br>
-
-    <div class="small">
-      YOU'RE MY FAVORITE LITTLE SURPRISE ✨
-    </div>
-
-    <div class="heart">♥</div>
-  </div>
 </div>
 
 <script>
+
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 let W = 0;
 let H = 0;
+
 let stars = [];
-let animationStart = Date.now();
 
 function resize() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
 }
 
 window.addEventListener("resize", resize);
 resize();
 
+
+/* STAR */
+
 class Star {
-  constructor() {
-    this.x = Math.random() * W;
-    this.y = Math.random() * H;
-    this.tx = this.x;
-    this.ty = this.y;
-    this.size = Math.random() * 2 + 0.8;
-    this.speed = Math.random() * 0.025 + 0.01;
-    this.phase = Math.random() * Math.PI * 2;
-    this.bright = Math.random();
-  }
 
-  update(time) {
-    this.x += (this.tx - this.x) * this.speed;
-    this.y += (this.ty - this.y) * this.speed;
+    constructor() {
 
-    this.phase += 0.03;
+        this.x = Math.random() * W;
+        this.y = Math.random() * H;
 
-    const glow = 0.5 + Math.sin(this.phase) * 0.5;
+        this.tx = this.x;
+        this.ty = this.y;
 
-    ctx.beginPath();
-    ctx.arc(
-      this.x,
-      this.y,
-      this.size + glow,
-      0,
-      Math.PI * 2
+        this.size = Math.random() * 2 + 1;
+
+        this.speed = Math.random() * 0.025 + 0.01;
+
+        this.phase = Math.random() * Math.PI * 2;
+
+        this.brightness = Math.random();
+    }
+
+    update() {
+
+        this.x += (this.tx - this.x) * this.speed;
+        this.y += (this.ty - this.y) * this.speed;
+
+        this.phase += 0.04;
+
+        const glow =
+            0.5 + Math.sin(this.phase) * 0.5;
+
+        ctx.beginPath();
+
+        ctx.arc(
+            this.x,
+            this.y,
+            this.size + glow,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fillStyle =
+            "rgba(255,255,255," +
+            (0.5 + this.brightness * 0.5) +
+            ")";
+
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = "#ff7ac8";
+
+        ctx.fill();
+
+        ctx.shadowBlur = 0;
+    }
+}
+
+
+/* CREATE STARS */
+
+for (let i = 600; i > 0; i--) {
+    stars.push(new Star());
+}
+
+
+/* CLEAR SCREEN */
+
+function clearScreen() {
+
+    ctx.fillStyle = "rgba(5,0,13,0.25)";
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
     );
-
-    ctx.fillStyle =
-      "rgba(255,255,255," +
-      (0.45 + this.bright * 0.55) +
-      ")";
-
-    ctx.shadowBlur = 12;
-    ctx.shadowColor = "#ff8ed8";
-    ctx.fill();
-    ctx.shadowBlur = 0;
-  }
 }
 
-for (let i = 0; i < 550; i++) {
-  stars.push(new Star());
-}
 
-function clear() {
-  ctx.fillStyle = "rgba(5,0,13,0.22)";
-  ctx.fillRect(0, 0, W, H);
-}
+/* RANDOM POSITION */
 
 function randomTargets() {
-  return stars.map(() => ({
-    x: Math.random() * W,
-    y: Math.random() * H
-  }));
+
+    return stars.map(() => {
+
+        return {
+            x: Math.random() * W,
+            y: Math.random() * H
+        };
+
+    });
 }
+
+
+/* IRA LETTER TARGET */
 
 function wordTargets(word) {
-  const temp = document.createElement("canvas");
-  const c = temp.getContext("2d");
 
-  temp.width = W;
-  temp.height = H;
+    const temp = document.createElement("canvas");
 
-  const size = Math.min(W * 0.25, 150);
+    const c = temp.getContext("2d");
 
-  c.font = "bold " + size + "px Arial";
-  c.textAlign = "center";
-  c.textBaseline = "middle";
-  c.fillStyle = "white";
-  c.fillText(word, W / 2, H / 2);
+    temp.width = W;
+    temp.height = H;
 
-  const data = c.getImageData(0, 0, W, H).data;
-  const points = [];
+    const size =
+        Math.min(W * 0.25, 160);
 
-  for (let y = 0; y < H; y += 5) {
-    for (let x = 0; x < W; x += 5) {
-      const i = (y * W + x) * 4;
+    c.font =
+        "bold " +
+        size +
+        "px Arial";
 
-      if (data[i + 3] > 100) {
-        points.push({ x, y });
-      }
+    c.textAlign = "center";
+    c.textBaseline = "middle";
+
+    c.fillStyle = "white";
+
+    c.fillText(
+        word,
+        W / 2,
+        H / 2
+    );
+
+    const data =
+        c.getImageData(
+            0,
+            0,
+            W,
+            H
+        ).data;
+
+    const points = [];
+
+    for (let y = 0; y < H; y += 5) {
+
+        for (let x = 0; x < W; x += 5) {
+
+            const index =
+                (y * W + x) * 4;
+
+            if (data[index + 3] > 100) {
+
+                points.push({
+                    x: x,
+                    y: y
+                });
+
+            }
+        }
     }
-  }
 
-  return points;
+    return points;
 }
+
+
+/* HEART */
 
 function heartTargets() {
-  const points = [];
 
-  const scale = Math.min(W, H) / 38;
+    const points = [];
 
-  for (let t = 0; t < Math.PI * 2; t += 0.025) {
+    const scale =
+        Math.min(W, H) / 38;
 
-    const x = 16 * Math.pow(Math.sin(t), 3);
+    for (
+        let t = 0;
+        t < Math.PI * 2;
+        t += 0.025
+    ) {
 
-    const y =
-      13 * Math.cos(t) -
-      5 * Math.cos(2 * t) -
-      2 * Math.cos(3 * t) -
-      Math.cos(4 * t);
+        const x =
+            16 * Math.pow(Math.sin(t), 3);
 
-    points.push({
-      x: W / 2 + x * scale,
-      y: H / 2 - y * scale
-    });
-  }
+        const y =
+            13 * Math.cos(t)
+            - 5 * Math.cos(2 * t)
+            - 2 * Math.cos(3 * t)
+            - Math.cos(4 * t);
 
-  return points;
+        points.push({
+
+            x:
+                W / 2 + x * scale,
+
+            y:
+                H / 2 - y * scale
+
+        });
+    }
+
+    return points;
 }
+
+
+/* MOVE STARS */
 
 function moveToTargets(points) {
 
-  stars.forEach((star, i) => {
+    stars.forEach((star, i) => {
 
-    const p = points[i % points.length];
+        const p =
+            points[i % points.length];
 
-    star.tx = p.x;
-    star.ty = p.y;
+        star.tx = p.x;
+        star.ty = p.y;
 
-  });
+    });
 }
 
-const random = randomTargets();
 
-moveToTargets(random);
+/* START RANDOM */
+
+moveToTargets(
+    randomTargets()
+);
+
+
+/* FORM IRA */
 
 setTimeout(() => {
 
-  const points = wordTargets("IRA");
-
-  moveToTargets(points);
+    moveToTargets(
+        wordTargets("IRA")
+    );
 
 }, 2500);
 
+
+/* FORM HEART */
+
 setTimeout(() => {
 
-  const points = heartTargets();
-
-  moveToTargets(points);
+    moveToTargets(
+        heartTargets()
+    );
 
 }, 6500);
 
+
+/* HIDE INTRO */
+
 setTimeout(() => {
 
-  document.getElementById("intro").style.opacity = "0";
+    document.getElementById("intro")
+        .style.opacity = "0";
 
 }, 7000);
 
+
+/* SHOW FINAL MESSAGE */
+
 setTimeout(() => {
 
-  document.getElementById("final").style.opacity = "1";
+    document.getElementById("final")
+        .style.opacity = "1";
 
 }, 8500);
 
+
+/* FIREWORKS */
+
 function fireworks() {
 
-  for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 12; i++) {
 
-    const x = Math.random() * W;
-    const y = Math.random() * H;
+        const x =
+            Math.random() * W;
 
-    ctx.beginPath();
+        const y =
+            Math.random() * H;
 
-    ctx.arc(x, y, Math.random() * 3 + 1, 0, Math.PI * 2);
+        ctx.beginPath();
 
-    ctx.fillStyle =
-      "rgba(255,120,210," +
-      Math.random() +
-      ")";
+        ctx.arc(
+            x,
+            y,
+            Math.random() * 3 + 1,
+            0,
+            Math.PI * 2
+        );
 
-    ctx.shadowBlur = 20;
-    ctx.shadowColor = "#ff5db1";
+        ctx.fillStyle =
+            "rgba(255,120,210," +
+            Math.random() +
+            ")";
 
-    ctx.fill();
+        ctx.shadowBlur = 20;
 
-    ctx.shadowBlur = 0;
-  }
+        ctx.shadowColor =
+            "#ff5db1";
+
+        ctx.fill();
+
+        ctx.shadowBlur = 0;
+    }
 }
+
+
+/* ANIMATION */
 
 function animate() {
 
-  clear();
+    clearScreen();
 
-  const time = Date.now();
+    stars.forEach(
+        star => star.update()
+    );
 
-  stars.forEach(star => star.update(time));
+    if (Date.now() % 1000 < 50) {
+        fireworks();
+    }
 
-  if (time - animationStart > 6500) {
-    fireworks();
-  }
-
-  requestAnimationFrame(animate);
+    requestAnimationFrame(
+        animate
+    );
 }
 
 animate();
 
-document.body.addEventListener("click", () => {
-  location.reload();
-});
+
+/* CLICK TO RESTART */
+
+document.body.addEventListener(
+    "click",
+    () => {
+        location.reload();
+    }
+);
+
 </script>
 
 </body>
